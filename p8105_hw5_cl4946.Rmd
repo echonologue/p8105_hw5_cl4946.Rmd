@@ -133,3 +133,48 @@ t_test_summary =
   )
 ```
 
+```{r}
+t_test_summary |>
+  ggplot(aes(x = true_mean, y = rejection_rate)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 0:6) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  labs(
+    title = "Rejection rate of the one-sample t-test",
+    x = "True mean",
+    y = "Proportion of tests rejecting the null"
+  ) +
+  theme_minimal(base_size = 12)
+```
+When the true mean was 0, about 5% of the tests rejected the null hypothesis. This is close to the expected Type I error rate. As the true mean increased, the test was more likely to reject the null, and power was almost 100% when the true mean was 4.
+
+```{r}
+t_test_summary |>
+  pivot_longer(
+    c(mean_all, mean_rejected),
+    names_to = "sample_set",
+    values_to = "average_estimate"
+  ) |>
+  mutate(
+    sample_set = if_else(
+      sample_set == "mean_all",
+      "All samples",
+      "Significant results only"
+    )
+  ) |>
+  ggplot(aes(x = true_mean, y = average_estimate, color = sample_set)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray50") +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 0:6) +
+  labs(
+    title = "Average estimates with and without selection",
+    x = "True mean",
+    y = "Average estimated mean",
+    color = NULL
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom")
+```
+When I used all the samples, the average estimate was close to the true mean. When I kept only significant results, the average estimate was higher for small positive true means. For example, when the true mean was 1, the average among significant results was about 2.3. By the time the true mean reached 4, almost all tests were significant, so the two averages were close.
