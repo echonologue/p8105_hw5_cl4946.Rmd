@@ -177,4 +177,4 @@ t_test_summary |>
   theme_minimal(base_size = 12) +
   theme(legend.position = "bottom")
 ```
-When I used all the samples, the average estimate was close to the true mean. When I kept only significant results, the average estimate was higher for small positive true means. For example, when the true mean was 1, the average among significant results was about 2.3. By the time the true mean reached 4, almost all tests were significant, so the two averages were close.
+Across all samples, the average estimate was close to the true mean. When I kept only significant results, the average estimate was higher than the true mean for small positive effects. For example, when the true mean was 1, the average estimate among significant results was about 2.3. Samples with unusually large means were more likely to reject the null, so keeping only significant results shifted the average upward. At a true mean of 4, almost all tests rejected the null, so the two averages were close.
