@@ -3,6 +3,13 @@ title: "p8105_hw5_cl4946"
 output: github_document
 ---
 
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(purrr)
+```
+
 # Problem 1
 
 I used simulation of groups of people to estimate the probability that at least two people share a birthday. Assuming that birthdays are independent and equal likely.
