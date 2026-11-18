@@ -21,3 +21,34 @@ has_shared_birthday = function(group_size) {
 }
 ```
 
+```{r}
+set.seed(8105)
+
+birthday_probabilities =
+  expand_grid(
+    group_size = 2:50,
+    simulation = 1:10000
+  ) |>
+  mutate(shared_birthday = map_lgl(group_size, has_shared_birthday)) |>
+  group_by(group_size) |>
+  summarize(
+    probability = mean(shared_birthday),
+    .groups = "drop"
+  )
+```
+
+```{r}
+birthday_probabilities |>
+  ggplot(aes(x = group_size, y = probability)) +
+  geom_line() +
+  geom_point(size = 1.5) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "gray50") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  labs(
+    title = "Probability of a shared birthday",
+    x = "Number of people",
+    y = "Estimated probability"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
